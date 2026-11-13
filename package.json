@@ -1,0 +1,33 @@
+{
+  "name": "mg-drive-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MG-Drive monorepo — Express backend + TanStack Start frontend",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:server": "npm run start -w apps/server",
+    "dev:web": "npm run dev -w apps/web",
+    "build:server": "npm run build -w apps/server",
+    "build:web": "npm run build -w apps/web",
+    "build": "npm run build:web && npm run build:server",
+    "install:all": "npm install",
+    "test": "npm run test -w apps/web",
+    "commitlint": "commitlint -e HEAD"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.0.3",
+    "@commitlint/config-conventional": "^19.0.3",
+    "husky": "^9.1.2",
+    "lint-staged": "^15.2.9"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "overrides": {
+    "xmlbuilder2": {
+      "js-yaml": "^4.3.2"
+    }
+  }
+}

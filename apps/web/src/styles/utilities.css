@@ -1,0 +1,51 @@
+/*
+ * Cross-feature layout and surface helpers. These are registered as Tailwind
+ * utilities (`@utility`) so variants such as `hover:` and `dark:` still apply.
+ */
+@utility surface-card {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-lift);
+}
+
+@utility hero-ink {
+  background-image: var(--gradient-hero);
+  color: var(--ink-foreground);
+}
+
+@utility accent-bar {
+  background-image: var(--gradient-accent);
+}
+
+@utility eyebrow {
+  font-family: var(--font-mono-ui);
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.container {
+  width: 100%;
+  max-width: 1600px;
+  margin-inline: auto;
+  padding-inline: 0.75rem;
+}
+
+@media (min-width: 361px) {
+  .container {
+    padding-inline: 1rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding-inline: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding-inline: 2rem;
+  }
+}

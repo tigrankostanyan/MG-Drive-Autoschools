@@ -1,0 +1,18 @@
+module.exports = routes = {
+  user: require("./user"),
+  auth: require("./auth"),
+  test: require("./test"),
+  group: require("./group"),
+  studentGroup: require("./studentGroup"),
+  question: require("./question"),
+  gallery: require("./gallery"),
+  registration: require("./registration"),
+  image: require("./image"),
+  contact: require("./contact"),
+  review: require("./review"),
+  faq: require("./faq"),
+  profile: require("./profile"),
+  adminMenu: require("./adminMenuItem"),
+  heroSetting: require("./heroSetting"),
+  adminAnalytics: require("./adminAnalytics"),
+};

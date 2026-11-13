@@ -1,0 +1,116 @@
+:root {
+	--active-color: #2563eb;
+	--active-color-hover: #1d4ed8;
+	--active-color-active: #1e40af;
+	--active-color-light: #eff6ff;
+	--active-color-ring: rgba(37, 99, 235, 0.25);
+	--active-color-glow: rgba(37, 99, 235, 0.35);
+
+	--radius: 0.875rem;
+	--background: #ffffff;
+	--foreground: oklch(0.19 0.02 250);
+	--card: #ffffff;
+	--card-foreground: oklch(0.19 0.02 250);
+	--popover: #ffffff;
+	--popover-foreground: oklch(0.19 0.02 250);
+
+	--primary: var(--active-color);
+	--primary-foreground: #ffffff;
+	--primary-hover: var(--active-color-hover);
+	--primary-active: var(--active-color-active);
+	--primary-light: var(--active-color-light);
+
+	--secondary: #f8fafc;
+	--secondary-foreground: oklch(0.19 0.02 250);
+	--muted: #f8fafc;
+	--muted-foreground: #64748b;
+
+	--accent: var(--active-color);
+	--accent-foreground: #ffffff;
+	--brand: var(--active-color);
+	--brand-foreground: #ffffff;
+	--brand-hover: var(--active-color-hover);
+	--brand-light: var(--active-color-light);
+
+	--destructive: oklch(0.58 0.21 27);
+	--destructive-foreground: oklch(0.99 0 0);
+	--success: oklch(0.62 0.15 155);
+	--success-foreground: oklch(0.99 0 0);
+	--border: #e2e8f0;
+	--input: #e2e8f0;
+	--ring: var(--active-color);
+	--ink: oklch(0.16 0.02 255);
+	--ink-foreground: oklch(0.97 0.005 95);
+
+	--gradient-hero: radial-gradient(
+		120% 120% at 80% 0%,
+		oklch(0.28 0.04 255) 0%,
+		oklch(0.16 0.02 255) 55%
+	);
+	--gradient-accent: linear-gradient(
+		135deg,
+		var(--active-color) 0%,
+		#3b82f6 50%,
+		var(--active-color) 100%
+	);
+	--shadow-lift: 0 2px 8px -2px rgba(15, 23, 42, 0.05), 0 1px 3px 0 rgba(15, 23, 42, 0.03);
+	--shadow-press: 0 4px 0 0 oklch(0.19 0.02 250 / 0.14);
+	--font-display: "Manrope Variable", "Manrope", "Noto Sans Armenian Variable", "Noto Sans Armenian", ui-sans-serif, system-ui, sans-serif;
+	--font-body: "Noto Sans Armenian Variable", "Noto Sans Armenian", "Manrope Variable", "Manrope", ui-sans-serif, system-ui, sans-serif;
+	--font-mono-ui: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, monospace;
+	--chart-1: oklch(0.646 0.222 41.116);
+	--chart-2: oklch(0.6 0.118 184.704);
+	--chart-3: oklch(0.398 0.07 227.392);
+	--chart-4: oklch(0.52 0.22 283);
+	--chart-5: oklch(0.769 0.188 70.08);
+	--sidebar: oklch(0.984 0.003 247.858);
+	--sidebar-foreground: oklch(0.129 0.042 264.695);
+	--sidebar-primary: var(--active-color);
+	--sidebar-primary-foreground: #ffffff;
+	--sidebar-accent: oklch(0.968 0.007 247.896);
+	--sidebar-accent-foreground: var(--active-color);
+	--sidebar-border: oklch(0.929 0.013 255.508);
+	--sidebar-ring: var(--active-color);
+}
+
+.dark {
+	--background: oklch(0.16 0.02 255);
+	--foreground: oklch(0.97 0.005 95);
+	--card: oklch(0.21 0.02 255);
+	--card-foreground: oklch(0.984 0.003 247.858);
+	--popover: oklch(0.208 0.042 265.755);
+	--popover-foreground: oklch(0.984 0.003 247.858);
+	--primary: var(--active-color);
+	--primary-foreground: #ffffff;
+	--primary-hover: var(--active-color-hover);
+	--primary-active: var(--active-color-active);
+	--primary-light: #1e3a8a;
+	--secondary: oklch(0.279 0.041 260.031);
+	--secondary-foreground: oklch(0.984 0.003 247.858);
+	--muted: oklch(0.279 0.041 260.031);
+	--muted-foreground: oklch(0.704 0.04 256.788);
+	--accent: var(--active-color);
+	--accent-foreground: #ffffff;
+	--brand: var(--active-color);
+	--brand-foreground: #ffffff;
+	--brand-hover: var(--active-color-hover);
+	--brand-light: #1e3a8a;
+	--destructive: oklch(0.704 0.191 22.216);
+	--destructive-foreground: oklch(0.984 0.003 247.858);
+	--border: oklch(1 0 0 / 10%);
+	--input: oklch(1 0 0 / 15%);
+	--ring: var(--active-color);
+	--chart-1: oklch(0.488 0.243 264.376);
+	--chart-2: oklch(0.696 0.17 162.48);
+	--chart-3: oklch(0.769 0.188 70.08);
+	--chart-4: oklch(0.627 0.265 303.9);
+	--chart-5: oklch(0.645 0.246 16.439);
+	--sidebar: oklch(0.208 0.042 265.755);
+	--sidebar-foreground: oklch(0.984 0.003 247.858);
+	--sidebar-primary: var(--active-color);
+	--sidebar-primary-foreground: #ffffff;
+	--sidebar-accent: oklch(0.279 0.041 260.031);
+	--sidebar-accent-foreground: var(--active-color);
+	--sidebar-border: oklch(1 0 0 / 10%);
+	--sidebar-ring: var(--active-color);
+}

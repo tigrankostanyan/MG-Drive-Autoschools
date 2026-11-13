@@ -1,0 +1,56 @@
+const router = require("express").Router();
+const ctrls = require("../controllers");
+const security = require("../security");
+router
+  .route("/")
+  .get(
+    ctrls.auth.protect,
+    ctrls.auth.restrictTo("admin"),
+    ctrls.studentGroup.getStudentGroups,
+  )
+  .post(
+    security.csrfProtection,
+    ctrls.auth.protect,
+    ctrls.auth.restrictTo("admin"),
+    ctrls.studentGroup.createStudentGroup,
+  );
+router.get(
+  "/:id/students",
+  ctrls.auth.protect,
+  ctrls.auth.restrictTo("admin"),
+  ctrls.studentGroup.getGroupStudents,
+);
+router.post(
+  "/:id/students",
+  security.csrfProtection,
+  ctrls.auth.protect,
+  ctrls.auth.restrictTo("admin"),
+  ctrls.studentGroup.setGroupStudents,
+);
+router.patch(
+  "/reorder",
+  security.csrfProtection,
+  ctrls.auth.protect,
+  ctrls.auth.restrictTo("admin"),
+  ctrls.studentGroup.reorderStudentGroups,
+);
+router
+  .route("/:id")
+  .get(
+    ctrls.auth.protect,
+    ctrls.auth.restrictTo("admin"),
+    ctrls.studentGroup.getStudentGroup,
+  )
+  .patch(
+    security.csrfProtection,
+    ctrls.auth.protect,
+    ctrls.auth.restrictTo("admin"),
+    ctrls.studentGroup.updateStudentGroup,
+  )
+  .delete(
+    security.csrfProtection,
+    ctrls.auth.protect,
+    ctrls.auth.restrictTo("admin"),
+    ctrls.studentGroup.deleteStudentGroup,
+  );
+module.exports = router;

@@ -1,0 +1,137 @@
+/*
+ * Global element defaults: cursor affordances, the app-wide focus treatment and
+ * base typography. Kept in `base` so feature styles can override it freely.
+ */
+@layer base {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.15s, 0.075s;
+		animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+		transition-duration: 0.15s, 0.075s;
+		transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		*,
+		*::before,
+		*::after {
+			animation-duration: 0.01ms, 0.01ms !important;
+			animation-timing-function: step-end !important;
+			transition-duration: 0.01ms !important;
+			transition-timing-function: step-end !important;
+		}
+	}
+
+	* {
+		border-color: var(--color-border);
+	}
+
+	button,
+	[role="button"],
+	a,
+	select,
+	input[type="checkbox"],
+	input[type="radio"],
+	summary {
+		cursor: pointer;
+	}
+
+	button:disabled,
+	[role="button"][aria-disabled="true"] {
+		cursor: not-allowed;
+	}
+
+	/* Ensure no button, interactive element, link, or navigation item ever shows an outline, focus ring, or border */
+	*,
+	*::before,
+	*::after {
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	button,
+	a,
+	[role="button"],
+	input[type="button"],
+	input[type="submit"],
+	input[type="reset"] {
+		outline: none;
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	:focus,
+	:focus-visible,
+	:focus:not(:focus-visible),
+	button:focus,
+	button:focus-visible,
+	a:focus,
+	a:focus-visible,
+	[role="button"]:focus,
+	[role="button"]:focus-visible {
+		outline: none;
+		outline-style: none;
+		outline-width: 0;
+	}
+
+	a:focus,
+	a:focus-visible,
+	nav a:focus,
+	nav a:focus-visible,
+	nav button:focus,
+	nav button:focus-visible {
+		outline: none;
+		box-shadow: none;
+	}
+
+	a,
+	button,
+	input,
+	select,
+	textarea {
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	html {
+		overflow-y: scroll;
+		scrollbar-gutter: stable;
+	}
+
+	/* Prevent scrollbar from disappearing and prevent layout shift when Radix dialog opens.
+     !important is required to override the inline styles Radix writes on <body> while the
+     dialog locks scroll. */
+	/* biome-ignore-start lint/complexity/noImportantStyles: must override Radix inline scroll-lock styles */
+	html body[data-scroll-locked] {
+		overflow: hidden !important;
+		overscroll-behavior: contain;
+		padding-right: 0 !important;
+		margin-right: 0 !important;
+		--removed-body-scroll-bar-size: 0px !important;
+	}
+
+	body[data-scroll-locked] header,
+	body[data-scroll-locked] nav {
+		padding-right: 0 !important;
+		margin-right: 0 !important;
+	}
+	/* biome-ignore-end lint/complexity/noImportantStyles: must override Radix inline scroll-lock styles */
+
+	body {
+		background-color: var(--color-background);
+		color: var(--color-foreground);
+		font-family: var(--font-body);
+		-webkit-font-smoothing: antialiased;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4 {
+		font-family: var(--font-display);
+		letter-spacing: -0.02em;
+		text-wrap: balance;
+	}
+
+	p {
+		text-wrap: pretty;
+	}
+}

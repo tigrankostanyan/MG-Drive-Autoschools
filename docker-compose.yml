@@ -1,0 +1,131 @@
+# NOTE: every secret must live in a local `.env` file next to this file.
+# Do NOT commit real secrets. The values below fail fast when unset.
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mgdrive_mysql
+    restart: unless-stopped
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
+      MYSQL_DATABASE: ${DB_NAME:-garik2026_mg_drive}
+    ports:
+      # Bind to loopback only: MySQL must never be reachable from the internet.
+      - "127.0.0.1:${DB_PORT:-3306}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -p$$MYSQL_ROOT_PASSWORD || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  redis:
+    image: redis:7-alpine
+    container_name: mgdrive_redis
+    restart: unless-stopped
+    ports:
+      # Bind to loopback only: Redis has no auth by default.
+      - "127.0.0.1:${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  server:
+    build:
+      context: .
+      dockerfile: apps/server/Dockerfile
+    container_name: mgdrive_server
+    restart: unless-stopped
+    ports:
+      - "${SERVER_PORT:-3300}:3300"
+    environment:
+      - NODE_ENV=production
+      - RUNNING_IN_DOCKER=1
+      - PORT=3300
+      - DB_NAME=${DB_NAME:-garik2026_mg_drive}
+      - DB_USERNAME=${DB_USERNAME:-root}
+      - DB_PASSWORD=${DB_PASSWORD:?Set DB_PASSWORD in .env}
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_SYNC_ALTER=false
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=${JWT_SECRET:?Set JWT_SECRET in .env}
+      - CSRF_SECRET=${CSRF_SECRET:?Set CSRF_SECRET in .env}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:?Set GOOGLE_CLIENT_ID in .env}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET:?Set GOOGLE_CLIENT_SECRET in .env}
+      - SERVER_URL=${SITE_URL:?Set SITE_URL in .env}
+      - CLIENT_URL=${SITE_URL:?Set SITE_URL in .env}
+      - ADMIN_URL=${SITE_URL:?Set SITE_URL in .env}
+      - FRONTEND_URL=${SITE_URL:?Set SITE_URL in .env}
+      - EMAIL_FROM_NAME=${EMAIL_FROM_NAME:-MG-Drive}
+      - EMAIL_FROM_EMAIL=${EMAIL_FROM_EMAIL:-}
+      - EMAIL_HOST=${EMAIL_HOST:-smtp.gmail.com}
+      - EMAIL_PORT=${EMAIL_PORT:-465}
+      - EMAIL_USERNAME=${EMAIL_USERNAME:-}
+      - EMAIL_PASSWORD=${EMAIL_PASSWORD:-}
+    volumes:
+      - ./apps/server:/app/apps/server
+      - /app/apps/server/node_modules
+      - server_uploads:/app/apps/server/public/images
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  worker:
+    build:
+      context: .
+      dockerfile: apps/server/Dockerfile
+    container_name: mgdrive_worker
+    command: ["node", "src/workers/emailWorker.js"]
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - DB_NAME=${DB_NAME:-garik2026_mg_drive}
+      - DB_USERNAME=${DB_USERNAME:-root}
+      - DB_PASSWORD=${DB_PASSWORD:?Set DB_PASSWORD in .env}
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - REDIS_URL=redis://redis:6379
+      - EMAIL_FROM_NAME=${EMAIL_FROM_NAME:-MG-Drive}
+      - EMAIL_FROM_EMAIL=${EMAIL_FROM_EMAIL:-}
+      - EMAIL_HOST=${EMAIL_HOST:-smtp.gmail.com}
+      - EMAIL_PORT=${EMAIL_PORT:-465}
+      - EMAIL_USERNAME=${EMAIL_USERNAME:-}
+      - EMAIL_PASSWORD=${EMAIL_PASSWORD:-}
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    container_name: mgdrive_web
+    restart: unless-stopped
+    ports:
+      - "${WEB_PORT:-8080}:8080"
+    environment:
+      - API_URL=http://server:3300
+      - VITE_SITE_URL=${SITE_URL:?Set SITE_URL in .env}
+      - VITE_GOOGLE_CLIENT_ID=${VITE_GOOGLE_CLIENT_ID:?Set VITE_GOOGLE_CLIENT_ID in .env}
+    volumes:
+      - ./apps/web:/app/apps/web
+      - /app/apps/web/node_modules
+    depends_on:
+      - server
+
+volumes:
+  mysql_data:
+  redis_data:
+  server_uploads:

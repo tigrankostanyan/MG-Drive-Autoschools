@@ -1,0 +1,35 @@
+{
+	"formatter": {
+		"lineWidth": 100,
+		"indentWidth": 2,
+		"formatWithErrors": true
+	},
+	"linter": {
+		"rules": {
+			"complexity": {
+				"useLiteralKeys": "off"
+			},
+			"suspicious": {
+				"noExplicitAny": "error"
+			},
+			"a11y": {
+				"noStaticElementInteractions": "off"
+			}
+		}
+	},
+	"files": {
+		"ignoreUnknown": true,
+		"includes": [
+			"**/*",
+			"!.output",
+			"!node_modules",
+			"!dist",
+			"!build",
+			"!coverage",
+			"!src/routeTree.gen.ts",
+			"!.wrangler",
+			"!*.css",
+			"!**/*.css"
+		]
+	}
+}

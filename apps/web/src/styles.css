@@ -1,0 +1,18 @@
+/*
+ * Global stylesheet entry point. Import order defines the cascade, so keep the
+ * vendor imports first and the partials in the order listed below.
+ */
+@import "@fontsource-variable/manrope";
+@import "@fontsource-variable/noto-sans-armenian";
+@import "@fontsource-variable/jetbrains-mono";
+@import "lenis/dist/lenis.css";
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "./styles/theme.css";
+@import "./styles/tokens.css";
+@import "./styles/base.css";
+@import "./styles/utilities.css";
+@import "./styles/keyframes.css";
+@import "./styles/animations.css";
+
+@custom-variant dark (&:is(.dark *));
