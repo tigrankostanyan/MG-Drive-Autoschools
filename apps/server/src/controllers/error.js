@@ -1,21 +1,6 @@
 // Error controller: converts thrown errors into HTTP responses
 const AppError = require("../utils/appError");
 const { buildSEO } = require("../services/seo");
-const handleCastErrorDB = (err) => {
-  const message = `Invalid ${err.path}: ${err.value}.`;
-  return new AppError(message, 400);
-};
-const handleDuplicateFieldsDB = (err) => {
-  const value = err.errmsg.match(/(["'])(\\?.)*?\1/)[0];
-  console.log(value);
-  const message = `Duplicate field value: ${value}. Please use another value!`;
-  return new AppError(message, 400);
-};
-const handleValidationErrorDB = (err) => {
-  const errors = Object.values(err.errors).map((el) => el.message);
-  const message = `Invalid input data. ${errors.join(". ")}`;
-  return new AppError(message, 400);
-};
 const handleJWTError = (err) =>
   new AppError("Invalid token. Please log in.", 401);
 const handleJWTExpiredError = (err) =>
@@ -38,6 +23,11 @@ const handleSequelizeUniqueConstraintError = (err) => {
     400,
   );
 };
+const handleSequelizeForeignKeyConstraintError = (err) =>
+  new AppError(
+    "Related record is missing or still referenced. Please check your data.",
+    400,
+  );
 // Render the error page, falling back to plain text when the view is missing.
 const renderErrorPage = (res, statusCode, view, locals, fallbackMsg) => {
   res.status(statusCode).render(view, locals, (renderErr, html) => {
@@ -139,14 +129,12 @@ module.exports = (err, req, res, next) => {
     // Work on a copy so original error stays intact
     let error = { ...err };
     error.message = err.message;
-    if (error.name === "CastError") error = handleCastErrorDB(error);
-    if (error.code === 11000) error = handleDuplicateFieldsDB(error);
     if (error.name === "SequelizeUniqueConstraintError")
       error = handleSequelizeUniqueConstraintError(error);
     if (error.name === "SequelizeValidationError")
       error = handleSequelizeValidationError(error);
-    if (error.name === "ValidationError")
-      error = handleValidationErrorDB(error);
+    if (error.name === "SequelizeForeignKeyConstraintError")
+      error = handleSequelizeForeignKeyConstraintError(error);
     if (error.name === "JsonWebTokenError") error = handleJWTError(error);
     if (error.name === "TokenExpiredError")
       error = handleJWTExpiredError(error);
