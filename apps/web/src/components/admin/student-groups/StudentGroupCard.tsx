@@ -74,6 +74,7 @@ export function StudentGroupCard({
 					type="checkbox"
 					checked={isSelected}
 					onChange={(e) => onSelectOne(group.id, e.target.checked)}
+					aria-label={`Ընտրել ${group.title} խումբը`}
 					className="rounded text-accent focus:ring-0"
 				/>
 			</div>

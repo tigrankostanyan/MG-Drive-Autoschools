@@ -21,6 +21,7 @@ export function SearchInput({
 			<input
 				type="text"
 				placeholder={placeholder}
+				aria-label={placeholder}
 				value={value}
 				onChange={(e) => onChange(e.target.value)}
 				className={inputClassName}

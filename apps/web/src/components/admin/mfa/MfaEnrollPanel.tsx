@@ -53,6 +53,7 @@ export function MfaEnrollPanel({
 					value={code}
 					onChange={(e) => onCodeChange(e.target.value.replace(/\D/g, ""))}
 					placeholder="6-նիշ կոդ"
+					aria-label="6-նիշ կոդ"
 					className={inputClass}
 				/>
 				<button

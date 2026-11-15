@@ -88,6 +88,7 @@ export function DateTimePicker({
 							type="time"
 							value={time}
 							onChange={handleTimeChange}
+							aria-label="Ժամ"
 							className="w-full rounded-md border border-slate-200 px-2 py-1 text-sm outline-none focus:border-accent dark:border-slate-800 dark:bg-slate-900"
 						/>
 					</div>

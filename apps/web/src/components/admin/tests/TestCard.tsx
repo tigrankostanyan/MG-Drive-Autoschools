@@ -41,6 +41,7 @@ export function TestCard({
 							setEditingId(tst.id);
 							setFormTitle(tst.title);
 						}}
+						aria-label={`Խմբագրել ${tst.title} թեստը`}
 						className="grid size-8 place-items-center rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300"
 					>
 						<Edit2 className="size-3.5" />
@@ -48,6 +49,7 @@ export function TestCard({
 					<button
 						type="button"
 						onClick={() => handleDelete(tst.id)}
+						aria-label={`Ջնջել ${tst.title} թեստը`}
 						className="grid size-8 place-items-center rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100 dark:bg-rose-950/40 dark:text-rose-400"
 					>
 						<Trash2 className="size-3.5" />
@@ -65,6 +67,7 @@ export function TestCard({
 					<button
 						type="button"
 						onClick={() => handleUpdate(tst.id)}
+						aria-label="Պահպանել"
 						className="rounded-lg bg-[image:var(--gradient-accent)] px-3 py-1 text-xs text-white"
 					>
 						<Save className="size-3.5" />

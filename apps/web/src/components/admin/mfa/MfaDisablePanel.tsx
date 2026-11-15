@@ -37,6 +37,7 @@ export function MfaDisablePanel({
 					value={password}
 					onChange={(e) => onPasswordChange(e.target.value)}
 					placeholder="Գաղտնաբառ"
+					aria-label="Գաղտնաբառ"
 					className={inputClass}
 				/>
 				<input
@@ -46,6 +47,7 @@ export function MfaDisablePanel({
 					value={code}
 					onChange={(e) => onCodeChange(e.target.value.replace(/\D/g, ""))}
 					placeholder="6-նիշ կոդ"
+					aria-label="6-նիշ կոդ"
 					className={inputClass}
 				/>
 				<button

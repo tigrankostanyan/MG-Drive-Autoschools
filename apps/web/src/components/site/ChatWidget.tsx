@@ -100,6 +100,7 @@ export function ChatWidget() {
 							onChange={(e) => setInput(e.target.value)}
 							onKeyDown={(e) => e.key === "Enter" && send()}
 							placeholder="Գրեք Ձեր հարցը..."
+							aria-label="Գրեք Ձեր հարցը"
 							className="h-10 flex-1 rounded-xl bg-slate-100/90 px-3.5 text-[13px] border border-slate-200/80 outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all text-slate-900 placeholder:text-slate-400"
 						/>
 						<button

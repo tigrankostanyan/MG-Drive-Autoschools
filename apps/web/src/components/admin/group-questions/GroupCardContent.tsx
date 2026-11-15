@@ -72,6 +72,7 @@ export function GroupCardContent({
 							setFormTitle(grp.title);
 							setFormText(grp.text || "");
 						}}
+						aria-label={`Խմբագրել ${grp.title} խումբը`}
 						className="grid size-8 place-items-center rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300"
 					>
 						<Edit2 className="size-3.5" />
@@ -79,6 +80,7 @@ export function GroupCardContent({
 					<button
 						type="button"
 						onClick={() => handleDelete(grp.id)}
+						aria-label={`Ջնջել ${grp.title} խումբը`}
 						className="grid size-8 place-items-center rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100 dark:bg-rose-950/40 dark:text-rose-400"
 					>
 						<Trash2 className="size-3.5" />
@@ -91,11 +93,13 @@ export function GroupCardContent({
 						type="text"
 						value={formTitle}
 						onChange={(e) => setFormTitle(e.target.value)}
+						aria-label="Խմբի վերնագիր"
 						className="w-full rounded-lg border px-3 py-2 text-sm font-bold dark:bg-slate-800 dark:border-slate-700"
 					/>
 					<textarea
 						value={formText}
 						onChange={(e) => setFormText(e.target.value)}
+						aria-label="Խմբի նկարագրություն"
 						className="w-full rounded-lg border px-3 py-2 text-sm dark:bg-slate-800 dark:border-slate-700 min-h-[60px]"
 						placeholder="Նկարագրություն..."
 					/>

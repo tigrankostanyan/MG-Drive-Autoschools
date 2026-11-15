@@ -26,6 +26,7 @@ export function MenuItemRowView({
 						value={item.label}
 						onChange={(e) => onUpdate("label", e.target.value)}
 						placeholder="Անվանում (օր․՝ Գլխավոր)"
+						aria-label="Անվանում"
 						className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm font-medium outline-none transition-all focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 dark:border-slate-700 dark:bg-slate-900 dark:focus:border-emerald-500"
 					/>
 				</div>
@@ -36,6 +37,7 @@ export function MenuItemRowView({
 						value={item.path}
 						onChange={(e) => onUpdate("path", e.target.value)}
 						placeholder="Հղում (օր․՝ /courses)"
+						aria-label="Հղում"
 						className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm font-medium outline-none transition-all focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 dark:border-slate-700 dark:bg-slate-900 dark:focus:border-emerald-500"
 					/>
 				</div>

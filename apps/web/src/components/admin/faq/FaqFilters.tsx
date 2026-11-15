@@ -24,6 +24,7 @@ export function FaqFilters({
 				<input
 					type="text"
 					placeholder="Փնտրել հարցը կամ պատասխանը..."
+					aria-label="Փնտրել հարցը կամ պատասխանը"
 					value={search}
 					onChange={(e) => onSearchChange(e.target.value)}
 					className="w-full rounded-2xl border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-xs shadow-sm outline-none focus:border-accent dark:border-slate-800 dark:bg-slate-900"
@@ -34,6 +35,7 @@ export function FaqFilters({
 					<button
 						type="button"
 						key={cat}
+						aria-pressed={categoryFilter === cat}
 						onClick={() => onCategoryChange(cat)}
 						className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
 							categoryFilter === cat

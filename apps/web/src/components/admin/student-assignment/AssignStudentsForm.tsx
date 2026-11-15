@@ -49,6 +49,7 @@ export function AssignStudentsForm({
 						value={search}
 						onChange={(e) => setSearch(e.target.value)}
 						placeholder="Որոնել անունով կամ էլ. փոստով..."
+						aria-label="Որոնել անունով կամ էլ. փոստով"
 						className="w-full rounded-xl border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm font-semibold text-slate-900 outline-none transition-colors placeholder:text-slate-400 focus:border-accent dark:border-slate-700 dark:bg-slate-800 dark:text-white"
 					/>
 				</div>
