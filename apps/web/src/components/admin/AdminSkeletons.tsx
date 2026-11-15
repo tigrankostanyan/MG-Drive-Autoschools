@@ -35,9 +35,9 @@ export function AdminPendingComponent() {
 					<div className="h-9 w-44 bg-slate-200 dark:bg-slate-800 rounded-xl animate-pulse" />
 					<div className="size-9 rounded-full bg-slate-200 dark:bg-slate-800 animate-pulse" />
 				</div>
-				<main className="flex-1 p-6 md:p-10 overflow-y-auto">
+				<div className="flex-1 p-6 md:p-10 overflow-y-auto">
 					<TabSkeleton tab="dashboard" />
-				</main>
+				</div>
 			</div>
 		</div>
 	);

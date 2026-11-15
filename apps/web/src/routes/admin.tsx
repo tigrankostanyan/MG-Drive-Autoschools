@@ -75,7 +75,7 @@ function AdminPage() {
 					onSelectTab={selectTab}
 					registrations={panel.registrations}
 				/>
-				<main className="flex-1 p-6 md:p-10 overflow-y-auto space-y-6">
+				<main id="main-content" className="flex-1 p-6 md:p-10 overflow-y-auto space-y-6">
 					<Suspense fallback={<TabSkeleton tab={activeTab} />}>
 						<div key={activeTab} className="tab-content-enter space-y-6">
 							<AdminTabContent tab={activeTab} panel={panel} onSelectTab={selectTab} />

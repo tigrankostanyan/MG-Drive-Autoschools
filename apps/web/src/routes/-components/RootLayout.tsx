@@ -161,7 +161,7 @@ export function RootLayout({
 						href="#main-content"
 						className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-white dark:focus:bg-slate-900 focus:p-3 focus:rounded-full focus:ring-2 focus:ring-primary/50 focus:shadow-lg text-sm font-medium text-slate-700 dark:text-slate-200"
 					>
-						Skip to main content
+						Անցնել հիմնական բովանդակությանը
 					</a>
 					<RouteProgress />
 					<AuthKickModal />
@@ -169,11 +169,9 @@ export function RootLayout({
 					<AuthModalTriggerListener />
 					{isAdminRoute ? (
 						<div className="min-h-screen w-full bg-[#F8FAFC] dark:bg-[#0B0F19] text-slate-900 dark:text-slate-100">
-							<main className="w-full min-h-screen">
-								<div>
-									<Outlet />
-								</div>
-							</main>
+							<div className="w-full min-h-screen">
+								<Outlet />
+							</div>
 							<Toaster position="bottom-right" richColors />
 						</div>
 					) : (
