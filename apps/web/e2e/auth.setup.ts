@@ -1,51 +1,20 @@
-import { type Page, test } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
 
-// Test credentials - use a dedicated test account
-export const TEST_USER = {
-	email: "test@example.com",
-	password: "TestPassword123!",
-};
+// NOTE: The app authenticates exclusively through Google OAuth (a third-party
+// popup), so a real end-to-end login cannot be automated from Playwright. Tests
+// that need an authenticated session must seed it out-of-band (e.g. an injected
+// session cookie) and are therefore out of scope for these specs.
 
-// Store session cookies for authenticated tests
-export async function login(page: Page) {
-	await page.goto("/auth");
-
-	await page.getByRole("tab", { name: "Sign In" }).click();
-
-	await page.getByLabel(/Email/i, { exact: false }).fill(TEST_USER.email);
-	await page.getByLabel(/Password/i, { exact: false }).fill(TEST_USER.password);
-
-	await page.getByRole("button", { name: /Sign In/i }).click();
-
-	// Wait for navigation to home page
-	await page.waitForURL("/");
-
-	// Verify user is logged in by checking for profile link or user avatar
-	await expect(page.locator("[data-testid='user-menu']")).toBeVisible({ timeout: 10000 });
+/** Opens the Google auth modal via the app's dedicated deep link. */
+export async function openAuthModal(page: Page) {
+	// The auth modal is lazily mounted after the browser goes idle, so allow
+	// extra time for the dialog to appear in slower environments.
+	await page.goto("/?auth=login");
+	await expect(page.getByRole("dialog", { name: "Մուտք հաշիվ" })).toBeVisible({ timeout: 20000 });
 }
 
-// Store signed-out session state
-export async function logout(page: Page) {
-	await page.goto("/profile");
-
-	await page.getByRole("button", { name: /Logout/i }).click();
-
-	await page.waitForURL("/");
+/** Closes the auth modal via the close button and asserts it is gone. */
+export async function closeAuthModal(page: Page) {
+	await page.getByRole("button", { name: "Փակել", exact: true }).click();
+	await expect(page.getByRole("dialog", { name: "Մուտք հաշիվ" })).toBeHidden();
 }
-
-// Create a new authenticated page context
-export const authTest = test.extend<{
-	loggedInPage: Page;
-}>({
-	loggedInPage: async ({ page }, use) => {
-		await login(page);
-		await use(page);
-		await logout(page);
-	},
-});
-
-// Expected test data - based on typical app configuration
-export const EXPECTED_TEST_DATA = {
-	testNames: ["Սկզբունք գանձ", "Առաջին ատյան", "Միջին ատյան", "Ավարտ թեստ"],
-	groupNames: ["Basic Group", "Advanced Group"],
-};

@@ -7,16 +7,19 @@ export default defineConfig({
 	retries: process.env.CI ? 2 : 0,
 	workers: process.env.CI ? 1 : undefined,
 	reporter: [["list"], ["html", { open: "never" }]],
-	sharedDataWorkers: true,
+	// The auth modal is lazily mounted after the browser goes idle, which is slow
+	// in single-worker environments, so give assertions room to wait.
+	expect: { timeout: 20000 },
 	use: {
-		baseURL: "http://localhost:3000",
+		baseURL: "http://localhost:8090",
 		trace: "on-first-retry",
 		screenshot: "only-on-failure",
+		actionTimeout: 15000,
 	},
 
 	webServer: {
-		command: "npm run build && npm run preview",
-		url: "http://localhost:3000",
+		command: "npx vite --port 8090 --strictPort",
+		url: "http://localhost:8090",
 		reuseExistingServer: !process.env.CI,
 		timeout: 120000,
 	},
