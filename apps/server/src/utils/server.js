@@ -2,7 +2,10 @@ const security = require("../security");
 const { startRetention } = require("./retention");
 module.exports = function server(app) {
   const DB = require("../models");
-  const syncOptions = process.env.DB_SYNC_ALTER === "true" ? { alter: true } : {};
+  const canAlterSchema =
+    process.env.NODE_ENV !== "production" &&
+    process.env.DB_SYNC_ALTER === "true";
+  const syncOptions = canAlterSchema ? { alter: true } : {};
   DB.con
     .sync(syncOptions)
     .then(async (res) => {
