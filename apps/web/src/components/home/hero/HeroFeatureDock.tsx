@@ -21,9 +21,9 @@ export function HeroFeatureDock() {
 									<Icon className="size-5 2xl:size-5.5 transition-transform" />
 								</div>
 								<div className="min-w-0">
-									<h4 className="text-[11.5px] sm:text-[12px] 2xl:text-[13px] font-black uppercase tracking-wider text-white group-hover:text-blue-300 transition-colors truncate">
+									<p className="text-[11.5px] sm:text-[12px] 2xl:text-[13px] font-black uppercase tracking-wider text-white group-hover:text-blue-300 transition-colors truncate">
 										{title}
-									</h4>
+									</p>
 									<p className="text-[10.5px] sm:text-[11px] 2xl:text-[12px] text-slate-400 mt-0.5 leading-snug font-medium line-clamp-1">
 										{desc}
 									</p>

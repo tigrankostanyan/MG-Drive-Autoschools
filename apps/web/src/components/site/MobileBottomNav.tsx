@@ -52,7 +52,10 @@ export function MobileBottomNav({
 		"to" in item ? (item.to === "/" ? location === "/" : location.startsWith(item.to)) : false,
 	);
 	return (
-		<div className="fixed bottom-0 left-0 z-50 w-full border-t border-slate-200/80 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-2xl hidden max-[576px]:block pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
+		<nav
+			aria-label="Շարժական նավիգացիա"
+			className="fixed bottom-0 left-0 z-50 w-full border-t border-slate-200/80 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-2xl hidden max-[576px]:block pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.06)]"
+		>
 			<div className="px-2">
 				<div className="relative grid h-[68px] grid-cols-5">
 					{activeIndex !== -1 && (
@@ -110,6 +113,6 @@ export function MobileBottomNav({
 					})}
 				</div>
 			</div>
-		</div>
+		</nav>
 	);
 }

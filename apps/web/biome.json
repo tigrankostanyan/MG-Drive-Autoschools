@@ -31,5 +31,17 @@
 			"!*.css",
 			"!**/*.css"
 		]
-	}
+	},
+	"overrides": [
+		{
+			"includes": ["src/components/home/testimonials/Carousel.tsx"],
+			"linter": {
+				"rules": {
+					"a11y": {
+						"noNoninteractiveTabindex": "off"
+					}
+				}
+			}
+		}
+	]
 }

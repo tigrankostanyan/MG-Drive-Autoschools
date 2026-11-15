@@ -79,7 +79,9 @@ export function Carousel({ testimonials }: { testimonials: ReviewItem[] | null }
 			{/* Drag-to-Scroll & Swipe Carousel Container */}
 			<section
 				ref={scrollRef}
+				aria-roledescription="carousel"
 				aria-label="Կարծիքների սահիկ"
+				tabIndex={0}
 				onScroll={handleScroll}
 				onMouseDown={handleMouseDown}
 				onMouseMove={handleMouseMove}

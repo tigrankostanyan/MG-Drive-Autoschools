@@ -1,6 +1,6 @@
 import { type CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import { Loader2, ShieldCheck, Sparkles, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { googleLogin } from "@/lib/api/auth";
 import { invalidateCsrfCache } from "@/lib/api/csrf";
 import { friendlyError } from "@/lib/auth-errors";
@@ -12,6 +12,7 @@ import { useAuthModal } from "./auth-modal-context";
 export function AuthModal() {
 	const { isOpen, closeAuthModal } = useAuthModal();
 	const [loading, setLoading] = useState(false);
+	const dialogRef = useRef<HTMLDivElement | null>(null);
 
 	// Surface login failures as a toast instead of an inline form notice.
 	const setError = (message: string) => {
@@ -44,6 +45,42 @@ export function AuthModal() {
 		window.addEventListener("keydown", handleKeyDown);
 		return () => window.removeEventListener("keydown", handleKeyDown);
 	}, [isOpen, closeAuthModal]);
+
+	// Move focus into the dialog on open and keep Tab focus trapped inside it.
+	useEffect(() => {
+		if (!isOpen) return;
+		const dialog = dialogRef.current;
+		if (!dialog) return;
+
+		const FOCUSABLE =
+			'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])';
+		const getFocusable = () =>
+			Array.from(dialog.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(
+				(el) => el.offsetParent !== null,
+			);
+
+		getFocusable()[0]?.focus();
+
+		const handleTab = (e: KeyboardEvent) => {
+			if (e.key !== "Tab") return;
+			const focusable = getFocusable();
+			if (focusable.length === 0) return;
+			const first = focusable[0];
+			const last = focusable[focusable.length - 1];
+			if (!first || !last) return;
+			const active = document.activeElement;
+			if (e.shiftKey && active === first) {
+				e.preventDefault();
+				last.focus();
+			} else if (!e.shiftKey && active === last) {
+				e.preventDefault();
+				first.focus();
+			}
+		};
+
+		window.addEventListener("keydown", handleTab);
+		return () => window.removeEventListener("keydown", handleTab);
+	}, [isOpen]);
 
 	if (!isOpen) return null;
 
@@ -84,6 +121,7 @@ export function AuthModal() {
 			onMouseDown={closeAuthModal}
 		>
 			<div
+				ref={dialogRef}
 				role="dialog"
 				aria-modal="true"
 				aria-label="Մուտք հաշիվ"
@@ -102,7 +140,7 @@ export function AuthModal() {
 
 				{/* Header Section */}
 				<div className="text-center space-y-2">
-					<div className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-primary">
+					<div className="inline-flex items-center gap-1.5 rounded-full bg-blue-700/10 px-3 py-1 text-blue-700">
 						<Sparkles className="size-3.5" />
 						<span className="text-[11px] font-bold tracking-wider uppercase">
 							ՈՒՍՈՒՄՆԱԿԱՆ ՀԱՐԹԱԿ
@@ -158,12 +196,12 @@ export function AuthModal() {
 				</div>
 
 				{/* Terms and Privacy notice */}
-				<p className="text-[11px] text-slate-400 dark:text-slate-500 text-center leading-normal">
+				<p className="text-[11px] text-slate-600 dark:text-slate-400 text-center leading-normal">
 					Մուտք գործելով՝ դուք ընդունում եք մեր{" "}
 					<a
 						href="/privacy"
 						onClick={closeAuthModal}
-						className="underline underline-offset-2 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
+						className="underline underline-offset-2 hover:text-slate-800 dark:hover:text-slate-200 transition-colors"
 					>
 						օգտագործման պայմանները
 					</a>

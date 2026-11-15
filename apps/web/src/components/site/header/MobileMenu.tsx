@@ -33,6 +33,7 @@ export function MobileMenu({
 				open ? "translate-x-0" : "translate-x-full"
 			}`}
 			aria-hidden={!open}
+			inert={!open}
 		>
 			<div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
 				<span className="text-sm font-bold uppercase tracking-wider text-slate-800">Մենյու</span>
