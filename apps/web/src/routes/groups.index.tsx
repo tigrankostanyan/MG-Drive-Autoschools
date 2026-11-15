@@ -154,7 +154,7 @@ function GroupsPage() {
 					</div>
 				)}
 
-				<div className="w-full">
+				<div id="groups-results" role="tabpanel" aria-label="Խմբերի ցանկ" className="w-full">
 					{filteredGroups.length === 0 ? (
 						<EmptyState
 							title="Խմբեր չեն գտնվել"

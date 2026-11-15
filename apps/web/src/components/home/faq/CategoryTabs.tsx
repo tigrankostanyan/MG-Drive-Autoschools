@@ -1,4 +1,5 @@
 import { ArrowRight, HelpCircle } from "lucide-react";
+import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { IconBox } from "@/components/ui/icon-box";
 import { CATEGORIES } from "./data";
@@ -10,6 +11,31 @@ export function CategoryTabs({
 	activeCategory: string;
 	onSelect: (id: string) => void;
 }) {
+	const listRef = useRef<HTMLDivElement | null>(null);
+
+	const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+		if (e.key !== "ArrowDown" && e.key !== "ArrowUp" && e.key !== "Home" && e.key !== "End") {
+			return;
+		}
+		const buttons = Array.from(
+			listRef.current?.querySelectorAll<HTMLButtonElement>('[role="tab"]') ?? [],
+		);
+		if (buttons.length === 0) return;
+		const currentIndex = buttons.indexOf(document.activeElement as HTMLButtonElement);
+		if (currentIndex === -1) return;
+		e.preventDefault();
+		let nextIndex = currentIndex;
+		if (e.key === "ArrowDown") nextIndex = (currentIndex + 1) % buttons.length;
+		else if (e.key === "ArrowUp") nextIndex = (currentIndex - 1 + buttons.length) % buttons.length;
+		else if (e.key === "Home") nextIndex = 0;
+		else nextIndex = buttons.length - 1;
+		const next = buttons[nextIndex];
+		if (!next) return;
+		const nextCat = CATEGORIES[nextIndex];
+		if (nextCat) onSelect(nextCat.id);
+		next.focus();
+	};
+
 	return (
 		<div className="space-y-5">
 			<div className="flex items-center justify-between px-1">
@@ -18,14 +44,25 @@ export function CategoryTabs({
 				</h3>
 			</div>
 
-			<div className="space-y-2.5">
+			<div
+				ref={listRef}
+				role="tablist"
+				aria-label="Հարցերի բաժիններ"
+				aria-orientation="vertical"
+				onKeyDown={onKeyDown}
+				className="space-y-2.5"
+			>
 				{CATEGORIES.map((cat) => {
 					const isActive = activeCategory === cat.id;
 					const Icon = cat.icon;
 					return (
 						<button
 							type="button"
+							role="tab"
 							key={cat.id}
+							aria-selected={isActive}
+							aria-controls="faq-results"
+							tabIndex={isActive ? 0 : -1}
 							onClick={() => onSelect(cat.id)}
 							className={`w-full flex items-center justify-between p-3.5 sm:p-4 rounded-2xl border transition-all duration-200 text-left ${
 								isActive

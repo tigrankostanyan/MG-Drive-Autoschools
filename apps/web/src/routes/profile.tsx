@@ -90,7 +90,12 @@ function ProfilePage() {
 							<ProfileTabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
 
 							{/* Tab Contents */}
-							<div className="flex-1 p-5 sm:p-8 lg:p-10 bg-white dark:bg-slate-900">
+							<div
+								id={`profile-tabpanel-${activeTab}`}
+								role="tabpanel"
+								aria-labelledby={`profile-tab-${activeTab}`}
+								className="flex-1 p-5 sm:p-8 lg:p-10 bg-white dark:bg-slate-900"
+							>
 								<ProfileTabContent
 									activeTab={activeTab}
 									currentUser={currentUser}

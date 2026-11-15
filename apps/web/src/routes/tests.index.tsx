@@ -161,7 +161,7 @@ function TestsPage() {
 						</p>
 					</div>
 				)}
-				<div className="w-full">
+				<div id="tests-results" role="tabpanel" aria-label="Թեստերի ցանկ" className="w-full">
 					{filteredTests.length === 0 ? (
 						<EmptyState
 							title="Թեստեր չեն գտնվել"

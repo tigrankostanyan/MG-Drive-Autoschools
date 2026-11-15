@@ -51,7 +51,12 @@ export function Faq() {
 							</Badge>
 						</div>
 
-						<div className="space-y-3">
+						<div
+							id="faq-results"
+							role="tabpanel"
+							aria-label="Հարց ու պատասխան"
+							className="space-y-3"
+						>
 							{items.map((item) => (
 								<FaqCard key={item.q} q={item.q} a={item.a} />
 							))}

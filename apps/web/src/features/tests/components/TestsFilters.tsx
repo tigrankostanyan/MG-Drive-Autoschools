@@ -1,4 +1,5 @@
 import { Search, X } from "lucide-react";
+import { useRef } from "react";
 import type { TestTabOption } from "@/features/tests/hooks/use-filtered-tests";
 import { cn } from "@/lib/utils";
 
@@ -17,27 +18,66 @@ export function TestsFilters({
 	onTabChange,
 	onSearchChange,
 }: TestsFiltersProps) {
+	const listRef = useRef<HTMLDivElement | null>(null);
+
+	const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+		if (e.key !== "ArrowRight" && e.key !== "ArrowLeft" && e.key !== "Home" && e.key !== "End") {
+			return;
+		}
+		const buttons = Array.from(
+			listRef.current?.querySelectorAll<HTMLButtonElement>('[role="tab"]') ?? [],
+		);
+		if (buttons.length === 0) return;
+		const currentIndex = buttons.indexOf(document.activeElement as HTMLButtonElement);
+		if (currentIndex === -1) return;
+		e.preventDefault();
+		let nextIndex = currentIndex;
+		if (e.key === "ArrowRight") nextIndex = (currentIndex + 1) % buttons.length;
+		else if (e.key === "ArrowLeft")
+			nextIndex = (currentIndex - 1 + buttons.length) % buttons.length;
+		else if (e.key === "Home") nextIndex = 0;
+		else nextIndex = buttons.length - 1;
+		const next = buttons[nextIndex];
+		if (!next) return;
+		onTabChange(tabs[nextIndex]?.id ?? activeTab);
+		onSearchChange("");
+		next.focus();
+	};
+
 	return (
 		<div className="w-full flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-white/70 dark:bg-slate-900/70 p-3 sm:p-4 rounded-2xl sm:rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-xs backdrop-blur-sm">
-			<div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
-				{tabs.map((tab) => (
-					<button
-						key={tab.id}
-						type="button"
-						onClick={() => {
-							onTabChange(tab.id);
-							onSearchChange("");
-						}}
-						className={cn(
-							"px-4 py-2 rounded-full text-xs sm:text-[13px] font-bold tracking-wide transition-all whitespace-nowrap cursor-pointer",
-							activeTab === tab.id && !searchQuery
-								? "bg-primary text-white shadow-xs"
-								: "bg-slate-100 hover:bg-slate-200/80 text-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700",
-						)}
-					>
-						{tab.label}
-					</button>
-				))}
+			<div
+				ref={listRef}
+				role="tablist"
+				aria-label="Թեստերի բաժիններ"
+				onKeyDown={onKeyDown}
+				className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none"
+			>
+				{tabs.map((tab) => {
+					const isActive = activeTab === tab.id && !searchQuery;
+					return (
+						<button
+							key={tab.id}
+							type="button"
+							role="tab"
+							aria-selected={isActive}
+							aria-controls="tests-results"
+							tabIndex={isActive ? 0 : -1}
+							onClick={() => {
+								onTabChange(tab.id);
+								onSearchChange("");
+							}}
+							className={cn(
+								"px-4 py-2 rounded-full text-xs sm:text-[13px] font-bold tracking-wide transition-all whitespace-nowrap cursor-pointer",
+								isActive
+									? "bg-primary text-white shadow-xs"
+									: "bg-slate-100 hover:bg-slate-200/80 text-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700",
+							)}
+						>
+							{tab.label}
+						</button>
+					);
+				})}
 			</div>
 
 			<div className="relative min-w-[200px] sm:w-72">
@@ -47,6 +87,7 @@ export function TestsFilters({
 					value={searchQuery}
 					onChange={(e) => onSearchChange(e.target.value)}
 					placeholder="Որոնել թեստ (օր.՝ 8, տոմս 12)..."
+					aria-label="Որոնել թեստ"
 					className="w-full pl-9.5 pr-8 py-2 text-xs sm:text-sm rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all"
 				/>
 				{searchQuery && (

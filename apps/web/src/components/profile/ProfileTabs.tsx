@@ -1,4 +1,5 @@
 import { AlertOctagon, CalendarDays, FileCheck2, LayoutDashboard, Settings } from "lucide-react";
+import { useRef } from "react";
 import type { ProfileTab, TabId } from "./data";
 
 function getTabIcon(id: TabId) {
@@ -25,15 +26,51 @@ export function ProfileTabs({
 	activeTab: TabId;
 	onChange: (id: TabId) => void;
 }) {
+	const listRef = useRef<HTMLDivElement | null>(null);
+
+	const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+		if (e.key !== "ArrowRight" && e.key !== "ArrowLeft" && e.key !== "Home" && e.key !== "End") {
+			return;
+		}
+		const buttons = Array.from(
+			listRef.current?.querySelectorAll<HTMLButtonElement>('[role="tab"]') ?? [],
+		);
+		if (buttons.length === 0) return;
+		const currentIndex = buttons.indexOf(document.activeElement as HTMLButtonElement);
+		if (currentIndex === -1) return;
+		e.preventDefault();
+		let nextIndex = currentIndex;
+		if (e.key === "ArrowRight") nextIndex = (currentIndex + 1) % buttons.length;
+		else if (e.key === "ArrowLeft")
+			nextIndex = (currentIndex - 1 + buttons.length) % buttons.length;
+		else if (e.key === "Home") nextIndex = 0;
+		else nextIndex = buttons.length - 1;
+		const next = buttons[nextIndex];
+		if (!next) return;
+		onChange(tabs[nextIndex]?.id ?? activeTab);
+		next.focus();
+	};
+
 	return (
 		<div className="border-b border-slate-200/80 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-950/40 p-2.5 sm:p-3">
-			<div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar scroll-smooth">
+			<div
+				ref={listRef}
+				role="tablist"
+				aria-label="Պրոֆիլի բաժիններ"
+				onKeyDown={onKeyDown}
+				className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar scroll-smooth"
+			>
 				{tabs.map((tab) => {
 					const isActive = activeTab === tab.id;
 					return (
 						<button
 							type="button"
 							key={tab.id}
+							role="tab"
+							id={`profile-tab-${tab.id}`}
+							aria-selected={isActive}
+							aria-controls={`profile-tabpanel-${tab.id}`}
+							tabIndex={isActive ? 0 : -1}
 							onClick={() => onChange(tab.id)}
 							className={`group relative flex items-center gap-2 rounded-full px-4 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-bold transition-all duration-200 whitespace-nowrap cursor-pointer ${
 								isActive
